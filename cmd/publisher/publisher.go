@@ -22,10 +22,13 @@ func getURL() string {
 	return url.String()
 }
 func getConfig() { cfg.GetConfig() }
+
+// TODO:Add args for choose json
 func main() {
-	getConfig()
 	fmt.Println("Hello, i am publisher!")
-	filename, _ := filepath.Abs("../publisher/model.json")
+	getConfig()
+	filename := os.Args[1]                                      //get filename
+	filename, _ = filepath.Abs("../publisher/data/" + filename) //build path
 	contents, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Println("File reading error", err)
