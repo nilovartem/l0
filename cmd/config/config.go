@@ -1,0 +1,32 @@
+package config
+
+import (
+	"os"
+	"path/filepath"
+
+	yaml "gopkg.in/yaml.v3"
+)
+
+type Config struct {
+	STAN struct {
+		Scheme    string `yaml:"scheme"`
+		Host      string `yaml:"host"`
+		Port      string `yaml:"port"`
+		ClusterID string `yaml:"clusterID"`
+		ClientID  string `yaml:"clientID"`
+		Channel   string `yaml:"channel"`
+	} `yaml:"STAN"`
+}
+
+func (config *Config) GetConfig() {
+	filename, _ := filepath.Abs("../config/env.yaml")
+	contents, err := os.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	err = yaml.Unmarshal(contents, &config)
+	if err != nil {
+		panic(err)
+	}
+	//TODO:return error
+}
