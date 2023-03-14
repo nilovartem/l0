@@ -9,12 +9,13 @@ import (
 
 type Config struct {
 	STAN struct {
-		Scheme    string `yaml:"scheme"`
-		Host      string `yaml:"host"`
-		Port      string `yaml:"port"`
-		ClusterID string `yaml:"clusterID"`
-		ClientID  string `yaml:"clientID"`
-		Channel   string `yaml:"channel"`
+		Scheme      string `yaml:"scheme"`
+		Host        string `yaml:"host"`
+		Port        string `yaml:"port"`
+		ClusterID   string `yaml:"clusterID"`
+		PublisherID string `yaml:"publisherID"`
+		ConsumerID  string `yaml:"consumerID"`
+		Channel     string `yaml:"channel"`
 	} `yaml:"STAN"`
 }
 
