@@ -34,7 +34,7 @@ func main() {
 		fmt.Println("File reading error", err)
 		panic(err)
 	}
-	sc, err := stan.Connect(cfg.STAN.ClusterID, cfg.STAN.ClientID, stan.NatsURL(getURL()))
+	sc, err := stan.Connect(cfg.STAN.ClusterID, cfg.STAN.PublisherID, stan.NatsURL(getURL()))
 	sc.Publish(cfg.STAN.Channel, []byte(contents))
 	if err != nil {
 		panic(err)
