@@ -6,7 +6,10 @@ import (
 
 	"github.com/nats-io/stan.go"
 	"github.com/nilovartem/l0/cmd/config"
+	"github.com/nilovartem/l0/cmd/memory"
 	"github.com/nilovartem/l0/cmd/model"
+	"github.com/nilovartem/l0/cmd/server"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -37,8 +40,8 @@ func save() {
 func restore() {
 
 }
-func server() {
-
+func runServer() {
+	server.Run()
 }
 
 // Обмениваемся данными через каналы?
@@ -60,7 +63,10 @@ func Run() {
 			order, _ = model.Unmarshal(m.Data)
 			if order != nil {
 				logrus.Infoln("[SUCCESS] Message was unmarshalled")
-				//caching
+				//TODO: Caching
+				memory.New()
+				memory.Set(cfg.Cache.ModelKey, order)
+
 			} else {
 				logrus.Warnln("[FAIL] Failed to unmarshal received message, needs retry transmission")
 			}
