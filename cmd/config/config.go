@@ -17,6 +17,9 @@ type Config struct {
 		ConsumerID  string `yaml:"consumerID"`
 		Channel     string `yaml:"channel"`
 	} `yaml:"STAN"`
+	Cache struct {
+		ModelKey string `yaml:"modelKey"`
+	} `yaml:"Cache"`
 }
 
 func (config *Config) GetConfig() {
