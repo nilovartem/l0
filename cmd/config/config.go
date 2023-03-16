@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/sirupsen/logrus"
 	yaml "gopkg.in/yaml.v3"
 )
 
@@ -17,20 +18,26 @@ type Config struct {
 		ConsumerID  string `yaml:"consumerID"`
 		Channel     string `yaml:"channel"`
 	} `yaml:"STAN"`
-	Cache struct {
-		ModelKey string `yaml:"modelKey"`
-	} `yaml:"Cache"`
+	DB struct {
+		Host     string `yaml:"host"`
+		Port     int    `yaml:"port"`
+		User     string `yaml:"user"`
+		Password string `yaml:"password"`
+		DBname   string `yaml:"dbname"`
+	} `yaml:"DB"`
 }
 
+/*Парсим в структур конфигурационный файл env.yaml*/
 func (config *Config) GetConfig() {
 	filename, _ := filepath.Abs("../config/env.yaml")
 	contents, err := os.ReadFile(filename)
 	if err != nil {
+		logrus.Errorln("[FAIL] Can't read config file, aborting")
 		panic(err)
 	}
 	err = yaml.Unmarshal(contents, &config)
 	if err != nil {
+		logrus.Errorln("[FAIL] Can't unmarshal config file, aborting")
 		panic(err)
 	}
-	//TODO:return error
 }
