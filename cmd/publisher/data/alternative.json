@@ -1,6 +1,6 @@
 {
-  "order_uid": "b563feb7b2b84b6test",
-  "track_number": "WBILMTESTTRACK",
+  "order_uid": "a",
+  "track_number": "ALTERNATIVE",
   "entry": "WBIL",
   "delivery": {
     "name": "Test Testov",
@@ -11,6 +11,11 @@
     "region": "Kraiot",
     "email": "test@gmail.com"
   },
+  "payment": {
+    "transaction": "b563feb7b2b84b6test",
+    "request_id": "",
+    "currency": "USD",
+    "provider": "wbpay",
     "amount": 1817,
     "payment_dt": 1637907727,
     "bank": "alpha",
@@ -18,7 +23,7 @@
     "goods_total": 317,
     "custom_fee": 0
   },
-  "items": 
+  "items": [
     {
       "chrt_id": 9934930,
       "track_number": "WBILMTESTTRACK",
