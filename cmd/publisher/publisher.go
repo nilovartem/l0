@@ -8,6 +8,7 @@ import (
 
 	"github.com/nats-io/stan.go"
 	"github.com/nilovartem/l0/cmd/config"
+	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -23,20 +24,25 @@ func getURL() string {
 }
 func getConfig() { cfg.GetConfig() }
 
-// TODO:Add args for choose json
 func main() {
-	fmt.Println("Hello, i am publisher!")
+	fmt.Println("Starting publisher")
 	getConfig()
-	filename := os.Args[1]                                      //get filename
-	filename, _ = filepath.Abs("../publisher/data/" + filename) //build path
+	filename := os.Args[1]
+	filename, _ = filepath.Abs("../publisher/data/" + filename)
 	contents, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Println("File reading error", err)
-		panic(err)
+		return
 	}
 	sc, err := stan.Connect(cfg.STAN.ClusterID, cfg.STAN.PublisherID, stan.NatsURL(getURL()))
-	sc.Publish(cfg.STAN.Channel, []byte(contents))
 	if err != nil {
-		panic(err)
+		logrus.Errorln("[FAIL] Cannot connect to STAN, aborting")
+		logrus.Errorln(err)
+		return
+	}
+	err = sc.Publish(cfg.STAN.Channel, []byte(contents))
+	if err != nil {
+		logrus.Errorln("[FAIL] Cannot publish to channel, aborting")
+		logrus.Errorln(err)
 	}
 }

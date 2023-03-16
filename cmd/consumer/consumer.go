@@ -6,10 +6,10 @@ import (
 
 	"github.com/nats-io/stan.go"
 	"github.com/nilovartem/l0/cmd/config"
+	"github.com/nilovartem/l0/cmd/database"
 	"github.com/nilovartem/l0/cmd/memory"
 	"github.com/nilovartem/l0/cmd/model"
 	"github.com/nilovartem/l0/cmd/server"
-
 	"github.com/sirupsen/logrus"
 )
 
@@ -26,25 +26,6 @@ func getURL() string {
 }
 func getConfig() { cfg.GetConfig() }
 
-// Читаем канал
-
-// Пишем данные в кэш и в БД - (ДОПОЛНИТЕЛЬНОЕ УСЛОВИЕ: ЕСЛИ ДАННЫЕ ИЗМЕНИЛИСЬ)
-func caching() {
-
-}
-func save() {
-
-}
-
-// Читаем кэш и отображаем полученные данные
-func restore() {
-
-}
-func runServer() {
-	server.Run()
-}
-
-// Обмениваемся данными через каналы?
 /*
 Основная функция приложения consumer
 */
@@ -63,10 +44,8 @@ func Run() {
 			order, _ = model.Unmarshal(m.Data)
 			if order != nil {
 				logrus.Infoln("[SUCCESS] Message was unmarshalled")
-				//TODO: Caching
-				memory.New()
-				memory.Set(cfg.Cache.ModelKey, order)
-
+				memory.Set(order.OrderUID, order)
+				database.InsertOrder(order)
 			} else {
 				logrus.Warnln("[FAIL] Failed to unmarshal received message, needs retry transmission")
 			}
@@ -74,5 +53,6 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
+	server.Run()
 	runtime.Goexit()
 }
